@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.jpp.dao.mdb.mapper.Hotel_RatePlanMapper" >
+
+    <sql id="Base_Column_List" >
+        ID,Hotel_ID,Hotel_Code,Rate_Plan_Code,Rate_Plan_Name,Includes_Breakfast_Count,Description,
+        Record_Status,Create_DateTime,Update_DateTime
+    </sql>
+    <sql id="Column_List" >
+        ID,Hotel_ID,Hotel_Code,Rate_Plan_Code,Rate_Plan_Name,Record_Status
+    </sql>
+
+    <select id="getHotelRatePlanListByHotelIdList" resultType="cn.jpp.entity.Hotel_Rate_PlanEntity">
+        SELECT
+        <include refid="Column_List"></include>
+        FROM hotel_rate_plan
+        <where>
+            Hotel_ID IN
+            <foreach collection="list" item="item" index="index" open="(" close=")" separator="," >
+                #{item,mode=IN,jdbcType=BIGINT}
+            </foreach>
+            AND Record_Status = 1
+        </where>
+    </select>
+</mapper>

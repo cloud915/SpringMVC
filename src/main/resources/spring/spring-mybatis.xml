@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xsi:schemaLocation="
+        http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+         http://www.springframework.org/schema/aop
+         http://www.springframework.org/schema/aop/spring-aop-4.1.xsd
+         http://www.springframework.org/schema/tx
+         http://www.springframework.org/schema/tx/spring-tx-4.1.xsd
+           http://www.springframework.org/schema/context
+         http://www.springframework.org/schema/context/spring-context-4.1.xsd  ">
+
+    <!-- 01.配置数据源 -->
+
+    <bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource">
+        <property name="driverClass" value="${jdbc.driverClass}"></property>
+        <property name="jdbcUrl" value="${jdbc.jdbcUrl}"></property>
+        <property name="user" value="${jdbc.user}"></property>
+        <property name="password" value="${jdbc.password}"></property>
+    </bean>
+    <!-- 1.1 关联jdbc.properties -->
+    <context:property-placeholder location="classpath*:jdbc.properties"/>
+    <!-- 02.配置SessionFactory -->
+    <bean id="sessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+        <!--<property name="configLocation" value="classpath:mybatis-config.xml"></property>-->
+        <property name="dataSource" ref="dataSource"></property>
+        <!--1、typeAliasesPackage，指定xml中parameterType属性的类型对应包名
+            <select id="add" parameterType="UserInfo">
+            即，UserInfo是cn.jpp.entity包下的
+            2、typeAliasesPackage注释掉、不指定，则需要parameterType的值，带上包名
+        -->
+        <!--<property name="typeAliasesPackage" value="cn.jpp.entity"/>-->
+        <property name="mapperLocations" value="classpath*:cn/jpp/dao/tdb/xml/*.xml"/>
+    </bean>
+    <!-- 03.生成dao代理對象 -->
+    <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+        <!--接口类的包名-->
+        <property name="basePackage" value="cn.jpp.dao.tdb.mapper"></property>
+        <property name="sqlSessionFactoryBeanName" value="sessionFactory"></property>
+    </bean>
+    <!--04.配置service-->
+    <bean id="userService" class="cn.jpp.service.UserInfoServiceImpl">
+        <!--开启了spring自动扫描包功能，因此注释掉了，
+        UserInfoServiceImpl类中的dao参数，使用了@Autowired注解-->
+        <!--<property name="dao" ref="IUserInfoDAO"></property>-->
+    </bean>
+    <!-- 05.配置action -->
+    <!--★★这里如果找到url映射关系，也可以注释掉，但是UserInfoServiceImpl类，要标记@Component注解-->
+    <bean id="/userAction.do" class="cn.jpp.controller.UserInfoController">
+        <property name="service" ref="userService"></property>
+    </bean>
+    <!-- 06.配置事务管理器 -->
+    <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+        <property name="dataSource" ref="dataSource"></property>
+    </bean>
+    <!-- 07.配置开启事务操作 -->
+    <tx:advice id="txAdvice" transaction-manager="transactionManager">
+        <tx:attributes>
+            <!--指定在连接方法上应用的事务属性 -->
+            <tx:method name="add*" isolation="DEFAULT" propagation="REQUIRED"/>
+        </tx:attributes>
+    </tx:advice>
+    <!-- aop配置 -->
+    <aop:config>
+        <aop:pointcut expression="execution(* *..service.*.*(..))" id="stockPointcut"/>
+        <aop:advisor advice-ref="txAdvice" pointcut-ref="stockPointcut"/>
+    </aop:config>
+
+
+    <!--druid config-->
+
+    <bean id="mdbDataSource" class="com.alibaba.druid.pool.DruidDataSource">
+        <property name="url" value="${mdb.url}"/>
+        <property name="username" value="${mdb.username}"/>
+        <property name="password" value="${mdb.password}"/>
+        <property name="driverClassName" value="${mdb.driver}"/>
+        <!-- 初始化连接大小 -->
+        <property name="initialSize" value="5"/>
+        <!-- 连接池最大使用连接数量 -->
+        <property name="maxActive" value="${mdb.maxActive}"/>
+        <!-- 连接池最小空闲 -->
+        <property name="minIdle" value="10"/>
+        <!-- 获取连接最大等待时间 -->
+        <property name="maxWait" value="60000"/>
+        <property name="validationQuery" value="SELECT 1"/>
+        <property name="testOnBorrow" value="true"/>
+        <property name="testOnReturn" value="false"/>
+        <property name="testWhileIdle" value="true"/>
+        <!-- 配置间隔多久才进行一次检测，检测需要关闭的空闲连接，单位是毫秒 -->
+        <property name="timeBetweenEvictionRunsMillis" value="60000"/>
+        <!-- 配置一个连接在池中最小生存的时间，单位是毫秒 -->
+        <property name="minEvictableIdleTimeMillis" value="300000"/>
+        <!-- 打开removeAbandoned功能 -->
+        <property name="removeAbandoned" value="true"/>
+        <!-- 1800秒，也就是30分钟 -->
+        <property name="removeAbandonedTimeout" value="1800"/>
+        <!-- 关闭abanded连接时输出错误日志 -->
+        <property name="logAbandoned" value="true"/>
+        <!-- 开启Druid的监控统计功能 -->
+        <property name="filters" value="config"/>
+        <property name="connectionProperties" value="config.decrypt=true;config.decrypt.key=${mdb.publickey}"/>
+        <!--<property name="filters" value="mergeStat" /> -->
+
+    </bean>
+    <bean id="mdbSqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+        <property name="dataSource" ref="mdbDataSource"/>
+        <property name="mapperLocations" value="classpath*:cn/jpp/dao/mdb/xml/*.xml"/>
+    </bean>
+    <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+        <property name="basePackage" value="cn.jpp.dao.mdb.mapper"/>
+        <property name="sqlSessionFactoryBeanName" value="mdbSqlSessionFactory"/>
+    </bean>
+
+    <!-- 事务 -->
+    <bean id="mdbTransactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+        <property name="dataSource" ref="mdbDataSource"/>
+    </bean>
+
+    <!-- 对标注@Transaction注解的Bean进行事务管理 -->
+    <tx:annotation-driven transaction-manager="mdbTransactionManager"/>
+
+</beans>

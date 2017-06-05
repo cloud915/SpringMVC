@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.jpp.dao.mdb.mapper.SSP_HotelMapper" >
+
+    <sql id="Base_Column_List" >
+        ID,Hotel_Code,Hotel_Name,Domain_Code,Domain_Name,Pms_Code,Pms_Name,Hotel_City,Hotel_Tel,Hotel_Address,Description,Record_Status,
+        Active_Status,Offline_Cause,Create_DateTime,Update_DateTime,Hotel_Tel,Hotel_City,Hotel_Email
+    </sql>
+    <sql id="Column_List" >
+        ID,Hotel_Code,Pms_Code
+    </sql>
+    <select id="getHotelCount" resultType="java.lang.Integer">
+        SELECT
+        COUNT(1)
+        FROM ssp_hotel
+        where 1=1
+        <if test="hotelCode != null and hotelCode != ''">
+            AND Hotel_Code = #{hotelCode,mode=IN,jdbcType=VARCHAR}
+        </if>
+        <if test="pmsCode != null and pmsCode != ''">
+            AND Pms_Code = #{pmsCode,mode=IN,jdbcType=VARCHAR}
+        </if>
+    </select>
+
+
+    <select id="getSspHotelListByPage" resultType="cn.jpp.entity.SSP_HotelEntity">
+        SELECT
+        <include refid="Column_List"></include>
+        FROM ssp_hotel
+        where 1=1
+        <if test="hotelCode != null and hotelCode != ''">
+            AND Hotel_Code = #{hotelCode,mode=IN,jdbcType=VARCHAR}
+        </if>
+        <if test="pmsCode != null and pmsCode != ''">
+            AND Pms_Code = #{pmsCode,mode=IN,jdbcType=VARCHAR}
+        </if>
+        ORDER by ID DESC
+        <if test="pageStart!=null">
+            LIMIT #{pageStart},#{pageSize}
+        </if>
+    </select>
+</mapper>
