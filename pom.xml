@@ -7,6 +7,35 @@
     <version>1.0-SNAPSHOT</version>
     <name>SpringMvc_SSM Maven Webapp</name>
     <url>http://maven.apache.org</url>
+	
+    <distributionManagement>
+        <repository>
+            <id>releases</id>
+            <name>maven release resp</name>
+            <url>http://nexus.jwops.cn/repository/maven-releases/</url>
+        </repository>
+        <snapshotRepository>
+            <id>snapshots</id>
+            <name>maven snapshot resp</name>
+            <url>http://nexus.jwops.cn/repository/maven-snapshots/</url>
+        </snapshotRepository>
+    </distributionManagement>
+    <!--&lt;!&ndash;设定工厂地址，更好的方式是在maven的setting配置文件中设置 这样所有项目都能使用私服的工厂 &ndash;&gt;-->
+    <!--<repositories>-->
+    <!--<repository>-->
+    <!--　　<id>nexus</id>-->
+    <!--　　<name>nexus repository</name>-->
+    <!--　　<url>http://nexus.jwops.cn/repository/maven-public/</url>-->
+    <!--　　 <releases>-->
+    <!--　　&lt;!&ndash;releases默认为true&ndash;&gt;-->
+    <!--　　<enabled>true</enabled>-->
+    <!--　　 </releases>-->
+    <!--　　<snapshots>-->
+    <!--　　　 &lt;!&ndash;snapshots默认为false&ndash;&gt;-->
+    <!--　　<enabled>true</enabled>-->
+    <!--　　</snapshots>-->
+    <!--</repository>-->
+    <!--</repositories>-->
     <dependencies>
         <dependency>
             <groupId>junit</groupId>
