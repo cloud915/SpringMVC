@@ -14,5 +14,6 @@ public interface Hotel_Channel_PublishMapper {
                                                                               @Param(value = "pageStart") Integer pageStart,
                                                                               @Param(value = "pageSize") Integer pageSize);
 
-    public List<Hotel_Channel_PublishEntity> getHotelChannelPublishListByHotelIdList(@Param(value = "list")List<Long> list);
+    public List<Hotel_Channel_PublishEntity> getHotelChannelPublishListByHotelIdList(@Param(value = "channelID") Long channelID,
+                                                                                        @Param(value = "list")List<Long> list);
 }

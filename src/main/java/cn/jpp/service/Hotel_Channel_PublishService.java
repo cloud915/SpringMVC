@@ -45,7 +45,7 @@ public class Hotel_Channel_PublishService {
         return list;
     }
 
-    public Map<String, List<Hotel_Channel_PublishEntity>> receive(String pmsCode, Integer pageSize) {
+    public Map<String, List<Hotel_Channel_PublishEntity>> receive(Long channelID, String pmsCode, Integer pageSize) {
         Map<String, List<Hotel_Channel_PublishEntity>> map = new HashMap<String, List<Hotel_Channel_PublishEntity>>();
         List<SSP_HotelEntity> hotels = new ArrayList<SSP_HotelEntity>();
 
@@ -102,7 +102,7 @@ public class Hotel_Channel_PublishService {
 
                 // publish
                 long a = System.currentTimeMillis();
-                List<Hotel_Channel_PublishEntity> publishlist = hotelChannelPublishMapper.getHotelChannelPublishListByHotelIdList(batchList);
+                List<Hotel_Channel_PublishEntity> publishlist = hotelChannelPublishMapper.getHotelChannelPublishListByHotelIdList(channelID, batchList);
 
                 for (Hotel_Channel_PublishEntity tmp : publishlist) {
                     try {
