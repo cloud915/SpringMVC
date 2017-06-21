@@ -16,6 +16,7 @@ public interface SSP_AvailabilitysMapper {
                                                           @Param(value = "room_Type_Code")String room_Type_Code,
                                                           @Param(value = "rate_Plan_Code")String rate_Plan_Code,
                                                           @Param(value = "active_DateTime")Long active_DateTime,
+                                                          @Param(value = "limit_DateTime")Long limit_DateTime,
                                                           @Param(value = "check_Avail_DateTime")Long check_Avail_DateTime);
 
     public SSP_AvailabilitysQueryRs getAfterAvailOfCheck(@Param(value = "pms_Code")String pms_Code,
@@ -26,6 +27,28 @@ public interface SSP_AvailabilitysMapper {
                                                          @Param(value = "check_Avail_DateTime")Long check_Avail_DateTime);
 
     public SSP_AvailabilitysQueryRs getLastAvailOfCheck(@Param(value = "pms_Code")String pms_Code,
+                                                        @Param(value = "hotel_Code")String hotel_Code,
+                                                        @Param(value = "room_Type_Code")String room_Type_Code,
+                                                        @Param(value = "rate_Plan_Code")String rate_Plan_Code,
+                                                        @Param(value = "active_DateTime")Long active_DateTime,
+                                                        @Param(value = "check_Avail_DateTime")Long check_Avail_DateTime);
+
+    public SSP_AvailabilitysQueryRs getBeforeAvailOfCheck2(@Param(value = "pms_Code")String pms_Code,
+                                                          @Param(value = "hotel_Code")String hotel_Code,
+                                                          @Param(value = "room_Type_Code")String room_Type_Code,
+                                                          @Param(value = "rate_Plan_Code")String rate_Plan_Code,
+                                                          @Param(value = "active_DateTime")Long active_DateTime,
+                                                          @Param(value = "limit_DateTime")Long limit_DateTime,
+                                                          @Param(value = "check_Avail_DateTime")Long check_Avail_DateTime);
+
+    public SSP_AvailabilitysQueryRs getAfterAvailOfCheck2(@Param(value = "pms_Code")String pms_Code,
+                                                         @Param(value = "hotel_Code")String hotel_Code,
+                                                         @Param(value = "room_Type_Code")String room_Type_Code,
+                                                         @Param(value = "rate_Plan_Code")String rate_Plan_Code,
+                                                         @Param(value = "active_DateTime")Long active_DateTime,
+                                                         @Param(value = "check_Avail_DateTime")Long check_Avail_DateTime);
+
+    public SSP_AvailabilitysQueryRs getLastAvailOfCheck2(@Param(value = "pms_Code")String pms_Code,
                                                         @Param(value = "hotel_Code")String hotel_Code,
                                                         @Param(value = "room_Type_Code")String room_Type_Code,
                                                         @Param(value = "rate_Plan_Code")String rate_Plan_Code,

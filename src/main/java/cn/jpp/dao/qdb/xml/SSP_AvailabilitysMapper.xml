@@ -6,10 +6,109 @@
         Room_Status,Processed_DataTime
     </sql>
 
+    <select id="getBeforeAvailOfCheck2" resultType="cn.jpp.entity.qdb.SSP_AvailabilitysQueryRs">
+        SELECT t.room_status,t.processed_datetime,t.received_datetime,t.status FROM
+        (SELECT * FROM `ssp_availabilitys`
+          <where>
+              <if test="pms_Code != null and pms_Code!=''">
+                  AND Pms_Code = #{pms_Code,mode=IN,jdbcType=VARCHAR}
+              </if>
+              <if test="hotel_Code != null and hotel_Code!=''">
+                  AND Hotel_Code = #{hotel_Code,mode=IN,jdbcType=VARCHAR}
+              </if>
+              <if test="room_Type_Code != null and room_Type_Code!=''">
+                  AND room_Type_Code = #{room_Type_Code,mode=IN,jdbcType=VARCHAR}
+              </if>
+              <if test="rate_Plan_Code != null and rate_Plan_Code!=''">
+                  AND rate_Plan_Code = #{rate_Plan_Code,mode=IN,jdbcType=VARCHAR}
+              </if>
+              <if test="active_DateTime != null and active_DateTime!=''">
+                  AND active_date = #{active_DateTime,mode=IN,jdbcType=BIGINT}
+              </if>
+          </where>
+        )t
+        <where>
+            <if test="check_Avail_DateTime != null and check_Avail_DateTime!=''">
+                <![CDATA[
+                AND received_DateTime < #{check_Avail_DateTime,mode=IN,jdbcType=BIGINT}
+                ]]>
+            </if>
+        </where>
+        ORDER BY t.processed_datetime ASC
+        LIMIT 1
+    </select>
+
+    <select id="getAfterAvailOfCheck2" resultType="cn.jpp.entity.qdb.SSP_AvailabilitysQueryRs">
+        SELECT t.room_status,t.processed_datetime,t.received_datetime,t.status FROM
+        (SELECT * FROM `ssp_availabilitys`
+        <where>
+            <if test="pms_Code != null and pms_Code!=''">
+                AND Pms_Code = #{pms_Code,mode=IN,jdbcType=VARCHAR}
+            </if>
+            <if test="hotel_Code != null and hotel_Code!=''">
+                AND Hotel_Code = #{hotel_Code,mode=IN,jdbcType=VARCHAR}
+            </if>
+            <if test="room_Type_Code != null and room_Type_Code!=''">
+                AND room_Type_Code = #{room_Type_Code,mode=IN,jdbcType=VARCHAR}
+            </if>
+            <if test="rate_Plan_Code != null and rate_Plan_Code!=''">
+                AND rate_Plan_Code = #{rate_Plan_Code,mode=IN,jdbcType=VARCHAR}
+            </if>
+            <if test="active_DateTime != null and active_DateTime!=''">
+                AND active_date = #{active_DateTime,mode=IN,jdbcType=BIGINT}
+            </if>
+        </where>
+        )t
+        <where>
+            <if test="check_Avail_DateTime != null and check_Avail_DateTime!=''">
+                <![CDATA[
+                AND received_DateTime > #{check_Avail_DateTime,mode=IN,jdbcType=BIGINT}
+                ]]>
+            </if>
+        </where>
+        ORDER BY t.processed_datetime ASC
+        LIMIT 1
+    </select>
+
+    <select id="getLastAvailOfCheck2" resultType="cn.jpp.entity.qdb.SSP_AvailabilitysQueryRs">
+        SELECT t.room_status,t.processed_datetime,t.received_datetime,t.status FROM
+        (SELECT * FROM `ssp_availabilitys`
+        <where>
+            <if test="pms_Code != null and pms_Code!=''">
+                AND Pms_Code = #{pms_Code,mode=IN,jdbcType=VARCHAR}
+            </if>
+            <if test="hotel_Code != null and hotel_Code!=''">
+                AND Hotel_Code = #{hotel_Code,mode=IN,jdbcType=VARCHAR}
+            </if>
+            <if test="room_Type_Code != null and room_Type_Code!=''">
+                AND room_Type_Code = #{room_Type_Code,mode=IN,jdbcType=VARCHAR}
+            </if>
+            <if test="rate_Plan_Code != null and rate_Plan_Code!=''">
+                AND rate_Plan_Code = #{rate_Plan_Code,mode=IN,jdbcType=VARCHAR}
+            </if>
+            <if test="active_DateTime != null and active_DateTime!=''">
+                AND active_date = #{active_DateTime,mode=IN,jdbcType=BIGINT}
+            </if>
+        </where>
+        )t
+        <where>
+            <if test="check_Avail_DateTime != null and check_Avail_DateTime!=''">
+                <![CDATA[
+                AND received_DateTime > #{check_Avail_DateTime,mode=IN,jdbcType=BIGINT}
+                ]]>
+            </if>
+        </where>
+        ORDER BY t.processed_datetime ASC
+        LIMIT 1
+    </select>
+
+
+
+
     <select id="getBeforeAvailOfCheck" resultType="cn.jpp.entity.qdb.SSP_AvailabilitysQueryRs">
         SELECT
-        CASE WHEN Room_Status=1 THEN '开' ELSE '关' END room_status,
-        processed_datetime
+        CASE WHEN Room_Status=1 THEN 'Open' ELSE 'Close' END room_status,
+        processed_datetime,status
         FROM ssp_availabilitys
         <where>
             <if test="pms_Code != null and pms_Code!=''">
@@ -27,6 +126,11 @@
             <if test="active_DateTime != null and active_DateTime!=''">
                 AND active_date = #{active_DateTime,mode=IN,jdbcType=BIGINT}
             </if>
+            <if test="limit_DateTime != null and limit_DateTime!=''">
+                <![CDATA[
+                AND received_DateTime > #{limit_DateTime,mode=IN,jdbcType=BIGINT}
+                ]]>
+            </if>
             <if test="check_Avail_DateTime != null and check_Avail_DateTime!=''">
                 <![CDATA[
                 AND received_DateTime < #{check_Avail_DateTime,mode=IN,jdbcType=BIGINT}
@@ -39,8 +143,8 @@
 
     <select id="getAfterAvailOfCheck" resultType="cn.jpp.entity.qdb.SSP_AvailabilitysQueryRs">
         SELECT
-        CASE WHEN Room_Status=1 THEN '开' ELSE '关' END room_status,
-        processed_datetime
+        CASE WHEN Room_Status=1 THEN 'Open' ELSE 'Close' END room_status,
+        processed_datetime,status
         FROM ssp_availabilitys
         <where>
             <if test="pms_Code != null and pms_Code!=''">
@@ -68,11 +172,10 @@
         limit 1
     </select>
 
-
     <select id="getLastAvailOfCheck" resultType="cn.jpp.entity.qdb.SSP_AvailabilitysQueryRs">
         SELECT
-        CASE WHEN Room_Status=1 THEN '开' ELSE '关' END room_status,
-        processed_datetime
+        CASE WHEN Room_Status=1 THEN 'Open' ELSE 'Close' END room_status,
+        processed_datetime,status
         FROM ssp_availabilitys
         <where>
             <if test="pms_Code != null and pms_Code!=''">

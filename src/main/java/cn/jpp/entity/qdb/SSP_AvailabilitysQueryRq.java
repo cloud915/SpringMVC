@@ -25,12 +25,15 @@ public class SSP_AvailabilitysQueryRq {
 
     private String Room_Status_B;
     private Long Processed_DataTime_B;
+    private String Status_B;
 
     private String Room_Status_A;
     private Long Processed_DataTime_A;
+    private String Status_A;
 
     private String Room_Status_L;
     private Long Processed_DataTime_L;
+    private String Status_L;
 
     public String getPms_Code() {
         return pms_Code;
@@ -85,7 +88,13 @@ public class SSP_AvailabilitysQueryRq {
     }
 
     public void setRoom_Status_B(String room_Status_B) {
-        Room_Status_B = room_Status_B;
+        if("1".equals(room_Status_B)){
+            Room_Status_B="Open";
+        }else if ("0".equals(room_Status_B)){
+            Room_Status_B="Close";
+        }else{
+            Room_Status_B = room_Status_B;
+        }
     }
 
     public Long getProcessed_DataTime_B() {
@@ -101,7 +110,14 @@ public class SSP_AvailabilitysQueryRq {
     }
 
     public void setRoom_Status_A(String room_Status_A) {
-        Room_Status_A = room_Status_A;
+
+        if("1".equals(room_Status_A)){
+            Room_Status_A="Open";
+        }else if ("0".equals(room_Status_A)){
+            Room_Status_A="Close";
+        }else{
+            Room_Status_A = room_Status_A;
+        }
     }
 
     public Long getProcessed_DataTime_A() {
@@ -117,7 +133,14 @@ public class SSP_AvailabilitysQueryRq {
     }
 
     public void setRoom_Status_L(String room_Status_L) {
-        Room_Status_L = room_Status_L;
+
+        if("1".equals(room_Status_L)){
+            Room_Status_L="Open";
+        }else if ("0".equals(room_Status_L)){
+            Room_Status_L="Close";
+        }else{
+            Room_Status_L = room_Status_L;
+        }
     }
 
     public Long getProcessed_DataTime_L() {
@@ -126,5 +149,41 @@ public class SSP_AvailabilitysQueryRq {
 
     public void setProcessed_DataTime_L(Long processed_DataTime_L) {
         Processed_DataTime_L = processed_DataTime_L;
+    }
+
+    public String getStatus_B() {
+        return Status_B;
+    }
+
+    public void setStatus_B(String status_B) {
+        if("3".equals(status_B)){
+            Status_B = "Delivery";
+        }else{
+            Status_B = status_B;
+        }
+    }
+
+    public String getStatus_A() {
+        return Status_A;
+    }
+
+    public void setStatus_A(String status_A) {
+        if("3".equals(status_A)){
+            Status_A = "Delivery";
+        }else{
+            Status_A = status_A;
+        }
+    }
+
+    public String getStatus_L() {
+        return Status_L;
+    }
+
+    public void setStatus_L(String status_L) {
+        if("3".equals(status_L)){
+            Status_L = "Delivery";
+        }else{
+            Status_L = status_L;
+        }
     }
 }

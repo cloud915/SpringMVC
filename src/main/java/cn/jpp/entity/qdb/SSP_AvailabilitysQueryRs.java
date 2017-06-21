@@ -6,6 +6,7 @@ package cn.jpp.entity.qdb;
 public class SSP_AvailabilitysQueryRs {
     private String Room_Status;
     private Long processed_datetime;
+    private String status;
 
     public String getRoom_Status() {
         return Room_Status;
@@ -21,5 +22,13 @@ public class SSP_AvailabilitysQueryRs {
 
     public void setProcessed_datetime(Long processed_datetime) {
         this.processed_datetime = processed_datetime;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 }

@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE log4j:configuration SYSTEM "log4j.dtd">
+<log4j:configuration xmlns:log4j='http://jakarta.apache.org/log4j/'>
+
+    <!-- root -->
+    <root>
+        <level value="info"/>
+        <appender-ref ref="stdoutAppender"/>
+    </root>
+
+    <!--logger instance-->
+    <logger name="requestLog" additivity="false">
+        <level value="info"/>
+        <appender-ref ref="immediateRequestFileAppender"/>
+        <!--<appender-ref ref="asyncRequestFileAppender"/>-->
+        <!--<appender-ref ref="requestSocketAppender"/>-->
+    </logger>
+    <logger name="normalLog" additivity="false">
+        <level value="info"/>
+        <appender-ref ref="immediateNormalFileAppender"/>
+        <!--<appender-ref ref="asyncNormalFileAppender"/>-->
+        <!--<appender-ref ref="normalSocketAppender"/>-->
+    </logger>
+    <logger name="metric" additivity="false">
+        <level value="info"/>
+        <appender-ref ref="immediateMetricFileAppender"/>
+        <!--<appender-ref ref="asyncMetricFileAppender"/>-->
+        <!--<appender-ref ref="metricSocketAppender"/>-->
+    </logger>
+
+    <!-- stdout appender -->
+    <appender name="stdoutAppender" class="org.apache.log4j.ConsoleAppender">
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern" value="[%-5p][%d{yyyyMMdd HH:mm:ss,SSS}][%.30c:%L] %m%n"/>
+        </layout>
+    </appender>
+
+    <!--socket appender-->
+    <appender name="requestSocketAppender" class="org.apache.log4j.net.SocketAppender">
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern" value="%m%n"/>
+        </layout>
+        <param name="application" value="springMVC-request"/>
+        <param name="Port" value="4500"/>
+        <param name="RemoteHost" value="10.0.3.40"/>
+        <param name="ReconnectionDelay" value="10000"/>
+    </appender>
+    <appender name="normalSocketAppender" class="org.apache.log4j.net.SocketAppender">
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern" value="%m%n"/>
+        </layout>
+        <param name="application" value="springMVC-normal"/>
+        <param name="Port" value="4501"/>
+        <param name="RemoteHost" value="10.0.3.41"/>
+        <param name="ReconnectionDelay" value="10000"/>
+    </appender>
+    <appender name="metricSocketAppender" class="org.apache.log4j.net.SocketAppender">
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern" value="%m%n"/>
+        </layout>
+        <param name="application" value="springMVC-metric"/>
+        <param name="Port" value="4502"/>
+        <param name="RemoteHost" value="10.0.3.42"/>
+        <param name="ReconnectionDelay" value="10000"/>
+    </appender>
+    <!--immediate appender-->
+    <appender name="immediateRequestFileAppender" class="org.apache.log4j.DailyRollingFileAppender">
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern" value="%m%n"/>
+        </layout>
+        <param name="File" value="/mnt/log/web/springMVC/springMVC-request.log"/>
+        <param name="Append" value="true"/>
+        <param name="DatePattern" value="'.'yyyy-MM-dd-HH"/>
+        <param name="ImmediateFlush" value="true"/>
+    </appender>
+    <appender name="immediateNormalFileAppender" class="org.apache.log4j.DailyRollingFileAppender">
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern" value="%m%n"/>
+        </layout>
+        <param name="File" value="/mnt/log/web/springMVC/springMVC-normal.log"/>
+        <param name="Append" value="true"/>
+        <param name="DatePattern" value="'.'yyyy-MM-dd-HH"/>
+        <param name="ImmediateFlush" value="true"/>
+    </appender>
+    <appender name="immediateMetricFileAppender" class="org.apache.log4j.DailyRollingFileAppender">
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern" value="%m%n"/>
+        </layout>
+        <param name="File" value="/mnt/log/web/springMVC/springMVC-metric.log"/>
+        <param name="Append" value="true"/>
+        <param name="DatePattern" value="'.'yyyy-MM-dd-HH"/>
+        <param name="ImmediateFlush" value="true"/>
+    </appender>
+    
+    <!--file appender-->
+    <appender name="requestFileAppender" class="org.apache.log4j.DailyRollingFileAppender">
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern" value="%m%n"/>
+        </layout>
+        <param name="File" value="/mnt/log/web/springMVC/springMVC-request.log"/>
+        <param name="Append" value="true"/>
+        <param name="DatePattern" value="'.'yyyy-MM-dd-HH"/>
+        <param name="BufferedIO" value="true"/>
+        <param name="BufferSize" value="128"/>
+    </appender>
+    <appender name="normalFileAppender" class="org.apache.log4j.DailyRollingFileAppender">
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern" value="%m%n"/>
+        </layout>
+        <param name="File" value="/mnt/log/web/springMVC/springMVC-normal.log"/>
+        <param name="Append" value="true"/>
+        <param name="DatePattern" value="'.'yyyy-MM-dd-HH"/>
+        <param name="BufferedIO" value="true"/>
+        <param name="BufferSize" value="128"/>
+    </appender>
+    <appender name="metricFileAppender" class="org.apache.log4j.DailyRollingFileAppender">
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern" value="%m%n"/>
+        </layout>
+        <param name="File" value="/mnt/log/web/springMVC/springMVC-metric.log"/>
+        <param name="Append" value="true"/>
+        <param name="DatePattern" value="'.'yyyy-MM-dd-HH"/>
+        <param name="BufferedIO" value="true"/>
+        <param name="BufferSize" value="128"/>
+    </appender>
+    <appender name="frameworkFileAppender" class="org.apache.log4j.DailyRollingFileAppender">
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern" value="[%-5p][%d{yyyyMMdd HH:mm:ss,SSS}][%.30c:%L] %m%n"/>
+        </layout>
+        <param name="File" value="/mnt/log/web/springMVC/springMVC-framework.log"/>
+        <param name="Append" value="true"/>
+        <param name="DatePattern" value="'.'yyyy-MM-dd-HH"/>
+        <param name="ImmediateFlush" value="true"/>
+        <!--<param name="BufferedIO" value="true"/>-->
+        <!--<param name="BufferSize" value="128"/>-->
+    </appender>
+
+    <!--async file appender-->
+    <appender name="asyncRequestFileAppender" class="org.apache.log4j.AsyncAppender">
+        <appender-ref ref="requestFileAppender"/>
+        <param name="Blocking" value="false"/>
+        <param name="BufferSize" value="128"/>
+    </appender>
+    <appender name="asyncNormalFileAppender" class="org.apache.log4j.AsyncAppender">
+        <appender-ref ref="normalFileAppender"/>
+        <param name="Blocking" value="false"/>
+        <param name="BufferSize" value="128"/>
+    </appender>
+    <appender name="asyncMetricFileAppender" class="org.apache.log4j.AsyncAppender">
+        <appender-ref ref="metricFileAppender"/>
+        <param name="Blocking" value="false"/>
+        <param name="BufferSize" value="128"/>
+    </appender>
+    <appender name="asyncframeworkFileAppender" class="org.apache.log4j.AsyncAppender">
+        <appender-ref ref="frameworkFileAppender"/>
+        <param name="Blocking" value="false"/>
+        <param name="BufferSize" value="128"/>
+    </appender>
+
+    <!-- avoid framework log -->
+    <category name="org.apache">
+        <priority value="warn"/>
+        <appender-ref ref="asyncframeworkFileAppender"/>
+    </category>
+    <category name="org.springframework">
+        <priority value="warn"/>
+        <appender-ref ref="asyncframeworkFileAppender"/>
+    </category>
+    <category name="org.apache.ibatis">
+        <priority value="debug"/>
+        <appender-ref ref="asyncframeworkFileAppender"/>
+    </category>
+    <category name="com.ibatis.common.jdbc">
+        <priority value="debug"/>
+        <appender-ref ref="asyncframeworkFileAppender"/>
+    </category>
+    <category name="com.ibatis.sqlmap.engine">
+        <priority value="info"/>
+        <appender-ref ref="asyncframeworkFileAppender"/>
+    </category>
+    <category name="java.sql">
+        <priority value="debug"/>
+        <appender-ref ref="asyncframeworkFileAppender"/>
+    </category>
+
+</log4j:configuration>

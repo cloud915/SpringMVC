@@ -108,6 +108,16 @@
             <version>4.1.9.RELEASE</version>
         </dependency>
         <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <version>1.7.15</version>
+        </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-log4j12</artifactId>
+            <version>1.7.15</version>
+        </dependency>
+        <dependency>
             <groupId>com.alibaba</groupId>
             <artifactId>druid</artifactId>
             <version>1.0.18</version>
@@ -163,6 +173,11 @@
           <version>11.2.0.1.0</version>
         </dependency>-->
 
+        <dependency>
+            <groupId>org.elasticsearch</groupId>
+            <artifactId>elasticsearch</artifactId>
+            <version>2.3.3</version>
+        </dependency>
     </dependencies>
     <build>
         <finalName>SpringMvc_SSM</finalName>

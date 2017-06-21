@@ -1,8 +1,8 @@
 package cn.jpp.controller;
 
+import cn.common.utils.DateTimeUtil;
 import cn.jpp.constants.CsvUtil;
 import cn.jpp.entity.qdb.SSP_AvailabilitysQueryRq;
-import cn.jpp.entity.qdb.SSP_AvailabilitysQueryRs;
 import cn.jpp.service.qdb.SspAvailabilitysService;
 import com.alibaba.fastjson.JSON;
 import org.junit.Test;
@@ -25,27 +25,32 @@ public class AvailController {
     @Autowired
     @Qualifier("sspAvailabilitysService")
     SspAvailabilitysService hotelChannelPublishService;
+    private static final String pmsCode = "DC";
+    private static final String filePath = "D:\\QQFile\\avail\\";
+    private static final String fileName = filePath + pmsCode + ".csv";
+    private static final String outputName = filePath + pmsCode + DateTimeUtil.format(System.currentTimeMillis(), "yyyyMMdd_HHmm") + "-results.csv";
 
     @Test
     public void checkBefore() {
         CsvUtil csvUtil = null;
-        String fileName = "D:\\QQFile\\3.csv";
-        String pmsCode = "BT";
+
         try {
-            csvUtil = new CsvUtil("D:\\QQFile\\3.csv");
+            csvUtil = new CsvUtil(fileName);
         } catch (Exception e) {
             e.printStackTrace();
         }
 
         try {
             List<SSP_AvailabilitysQueryRq> list = csvUtil.read(fileName, pmsCode);
-            List<SSP_AvailabilitysQueryRq> results=new ArrayList<SSP_AvailabilitysQueryRq>();
+            List<SSP_AvailabilitysQueryRq> results = new ArrayList<SSP_AvailabilitysQueryRq>();
             int a = 0;
             for (SSP_AvailabilitysQueryRq tmp : list) {
                 try {
-                    SSP_AvailabilitysQueryRq response=  hotelChannelPublishService.process(tmp);
-                    results.add(response);
-                    a++;
+                    SSP_AvailabilitysQueryRq response = hotelChannelPublishService.process(tmp);
+                    if (response != null) {
+                        results.add(response);
+                    }
+                    System.out.println("fitting:" + a++);
                 } catch (Exception ex) {
                     System.out.println(ex.getMessage());
                 }
@@ -53,7 +58,7 @@ public class AvailController {
             String ss = JSON.toJSONString(results);
 
             int b = 0;
-            //csvUtil.write(fileName,"BT",);
+            csvUtil.write(outputName, pmsCode, results);
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -80,7 +85,4 @@ public class AvailController {
 
     }
 
-    public void checkAfter() {
-
-    }
 }

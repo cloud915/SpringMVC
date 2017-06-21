@@ -20,6 +20,10 @@
         <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
     </listener>
 
+    <listener>
+        <listener-class>cn.context.ContextListener</listener-class>
+    </listener>
+
     <!--针对SpringMVC的配置，中央调度器：本质上是一个serlvet配置的关于SpringMVC组件-->
     <servlet>
         <servlet-name>springmvc</servlet-name>
